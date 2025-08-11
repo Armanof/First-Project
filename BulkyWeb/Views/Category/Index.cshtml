@@ -1,0 +1,38 @@
+﻿@model IEnumerable<CategoryDTO>
+@{
+    ViewData["Title"] = "Manage Categories";
+    var editCategory = ViewBag.EditCategory as CategoryDTO;
+}
+
+
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">📂 Category Management</h2>
+    <button onclick="openEntityModal('Category','Upsert' )"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        ➕ Add Category
+    </button>
+</div>
+
+
+<table class="min-w-full bg-white rounded shadow overflow-hidden">
+    <thead class="bg-blue-50 text-gray-700">
+        <tr>
+            <th class="text-left px-6 py-3">Name</th>
+            <th class="text-left px-6 py-3">Created</th>
+            <th class="text-left px-6 py-3">Actions</th>
+        </tr>
+    </thead>
+    <tbody class="divide-y text-gray-700">
+        @foreach (var category in Model)
+        {
+            <tr class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4">@category.Name</td>
+                <td class="px-6 py-4">@category.InsertedDateTime.ToString("yyyy-MM-dd")</td>
+                <td class="px-6 py-4 space-x-2">
+                    <a href="#" onclick="openEntityModal('Category','Upsert' ,'@category.Id')" class="text-blue-600 hover:underline">Edit</a>
+                    <a href="#" onclick="callApi('/Category/Delete/@category.Id','PUT')" class="text-red-600 hover:underline">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

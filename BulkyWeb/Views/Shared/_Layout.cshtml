@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+    var title = ViewData["Title"] ?? "Bulky Book";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@title - Bulky Book</title>
+
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Flowbite for Tailwind Components -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+    <!-- Heroicons -->
+    <link href="https://unpkg.com/heroicons@2.0.16/24/solid.css" rel="stylesheet" />
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+
+    <!-- Sidebar -->
+    <div class="flex">
+        <aside class="w-64 bg-white shadow-lg h-screen sticky top-0 z-50">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-blue-600 mb-4">📚 Bulky Book</h1>
+                <nav class="space-y-2">
+                    <a asp-controller="Home" asp-action="Index" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
+                        <i class="w-5 h-5 mr-2 text-blue-500">🏠</i> Home
+                    </a>
+                    <a asp-controller="Product" asp-action="Index" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
+                        <i class="w-5 h-5 mr-2 text-blue-500">📖</i> Books
+                    </a>
+                    <a asp-controller="Category" asp-action="Index" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
+                        <i class="w-5 h-5 mr-2 text-blue-500">🗂️</i> Categories
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
+                        <i class="w-5 h-5 mr-2 text-blue-500">🔐</i> Login
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">@title</h2>
+                @RenderBody()
+            </div>
+
+            <!-- Footer -->
+            <footer class="text-center text-gray-500 text-sm mt-10">
+                <p>&copy; @DateTime.Now.Year - Bulky Book. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

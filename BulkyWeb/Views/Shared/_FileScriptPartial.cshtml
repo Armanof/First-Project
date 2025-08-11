@@ -1,0 +1,22 @@
+﻿<script>
+        document.addEventListener('click', function (e) {
+        const trigger = e.target.closest('[data-browse-trigger]');
+        if (!trigger) return;
+
+        const fileInputSelector = trigger.getAttribute('data-target-input');
+        const displayInputSelector = trigger.getAttribute('data-display-input');
+
+        const fileInput = document.querySelector(fileInputSelector);
+        const displayInput = document.querySelector(displayInputSelector);
+
+        if (fileInput) {
+            fileInput.click();
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0 && displayInput) {
+                    displayInput.value = fileInput.files[0].name;
+                }
+            }, { once: true });
+        }
+    });
+</script>
