@@ -20,6 +20,8 @@ namespace Bulky_Models.Identity
 
         public virtual Permission ParentPemission { get; set; }
         public virtual ICollection<Permission> ChildPermissions { get; set; }
+        public virtual ICollection<RolePermission> RolePermissions { get; set; }
+        public virtual ICollection<PermissionEndPoint> PermissionEndPoints { get; set; }
 
         public override void StringNormalize()
         {
@@ -42,7 +44,7 @@ namespace Bulky_Models.Identity
             builder.HasOne(x => x.ParentPemission)
                 .WithMany(x => x.ChildPermissions)
                 .HasForeignKey(x => x.F_ParentId)
-                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.SetNull);
+                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.NoAction);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Bulky_Models;
+using Bulky_Models.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,6 +19,16 @@ namespace Bulky_Infrastructure.Contexts
             this.accessor = accessor;
         }
 
+        
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<PermissionEndPoint> PermissionEndPoints { get; set; }
+
+
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
 
@@ -25,8 +36,24 @@ namespace Bulky_Infrastructure.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
+            #region Identity Models
+
+            modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration(accessor));
+            modelBuilder.ApplyConfiguration(new RoleEntityTypeConfiguration(accessor));
+            modelBuilder.ApplyConfiguration(new PermissionEntityTypeConfiguration(accessor));
+            modelBuilder.ApplyConfiguration(new UserRoleEntityTypeConfiguration(accessor));
+            modelBuilder.ApplyConfiguration(new RolePermissionEntityTypeConfiiguration(accessor));
+            modelBuilder.ApplyConfiguration(new PermissionEndPointsEntityTypeConfiguration(accessor));
+
+            #endregion
+
+
+            #region Business Models
+
             modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration(accessor));
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration(accessor));
+
+            #endregion
         }
     }
 }

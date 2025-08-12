@@ -24,6 +24,7 @@ namespace Bulky_Models.Identity
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
+
         public override void StringNormalize()
         {
             Name = StringNormalization.NormalizeString(Name);

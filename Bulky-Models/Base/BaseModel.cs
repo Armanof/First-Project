@@ -21,6 +21,8 @@ namespace Bulky_Models.Base
         public DateTime? UpdatedDateTime { get; set; }
         public Guid? UpdatedUserID { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public abstract void StringNormalize();
     }
 
@@ -54,6 +56,9 @@ namespace Bulky_Models.Base
 
             builder.Property(x => x.InsertedDateTime)
                 .HasDefaultValueSql("GETDATE()");
+
+            builder.Property(x => x.IsDeleted)
+                .HasDefaultValueSql("0");
 
             ConfigureEntity(builder);
         }
