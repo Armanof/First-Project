@@ -14,7 +14,6 @@ namespace Bulky_Models.Identity
         : BaseModel
     {
         public string Name { get; set; }
-        public string Username { get; set; }
         public string Password { get; set; }
         public string SaltPassword { get; set; }
         public string PhoneNumber { get; set; }
@@ -28,7 +27,6 @@ namespace Bulky_Models.Identity
         public override void StringNormalize()
         {
             Name = StringNormalization.NormalizeString(Name);
-            Username = StringNormalization.NormalizeString(Username);
             PhoneNumber = StringNormalization.NormalizeString(PhoneNumber);
             Email = StringNormalization.NormalizeString(Email);
         }
