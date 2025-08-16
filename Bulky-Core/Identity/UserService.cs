@@ -1,4 +1,5 @@
-﻿using Bulky_Core.Base;
+﻿using Azure;
+using Bulky_Core.Base;
 using Bulky_Core.Messages;
 using Bulky_Core.Utilities;
 using Bulky_Core.Utilities.Enums;
@@ -16,35 +17,35 @@ using System.Threading.Tasks;
 
 namespace Bulky_Core.Identity
 {
-    public class AccountService
+    public class UserService
         : BaseService
     {
         private readonly IUnitOfWork uow;
-        private readonly ILogger<AccountService> logger;
+        private readonly ILogger<UserService> logger;
 
-        public AccountService(IUnitOfWork uow,ILogger<AccountService> logger)
+        public UserService(IUnitOfWork uow,ILogger<UserService> logger)
         {
             this.uow = uow;
             this.logger = logger;
         }
 
-        public async Task<bool> Register(RegisterUserDTO input)
+        public async Task<User?> Register(RegisterUserDTO input)
         {
             try
             {
                 if (input == null)
-                    return Failure(false, GeneralMessages.DefaultError());
+                    return Failure(null as User, GeneralMessages.DefaultError());
 
                 var validator = new RegisterUserValidator(uow);
                 var result = validator.Validate(input);
                 if (!result.IsValid)
-                    return Failure(false, "", string.Join("<br>", result.Errors.Select(x => x.ErrorMessage)));
+                    return Failure(null as User, "", string.Join("<br>", result.Errors.Select(x => x.ErrorMessage)));
 
                 if (input.ConfirmPassword != input.Password)
-                    return Failure(false, GeneralMessages.MustEqualsTo("رمز عبور", "تاییدیه رمز عبور"));
+                    return Failure(null as User, GeneralMessages.MustEqualsTo("رمز عبور", "تاییدیه رمز عبور"));
 
                 if (PasswordHelper.CheckPasswordStrength(input.Password) == PasswordStrengthEnum.Weak)
-                    return Failure(false, GeneralMessages.PasswordIsWeak);
+                    return Failure(null as User, GeneralMessages.PasswordIsWeak);
 
                 var hashResult = HashTools.GetHashRfc2898(input.Password);
 
@@ -61,12 +62,12 @@ namespace Bulky_Core.Identity
 
                 await uow.SaveChangesAsync();
 
-                return true;
+                return user;
             }
             catch (Exception ex)
             {
                 logger.LogError($"exception Accured in Registering user with error {ex.Message}");
-                return Failure(false, GeneralMessages.DefaultError());
+                return Failure(null as User, GeneralMessages.DefaultError());
             }
         }
     }

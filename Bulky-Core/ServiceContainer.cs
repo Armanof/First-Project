@@ -5,6 +5,7 @@ using Bulky_Core.Interfaces;
 using Bulky_DTO.Base;
 using Bulky_Infrastructure.Interfaces;
 using Bulky_Models.Base;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,15 +22,21 @@ namespace Bulky_Core
         private readonly IMapper mapper;
         private readonly ILoggerFactory loggerFactory;
         private readonly IValidatorFactory validatorFactory;
+        private readonly IConfiguration config;
         private Dictionary<Type, object> serviceDictionary;
         private object service;
-        public ServiceContainer(IUnitOfWork uow, IMapper mapper, ILoggerFactory loggerFactory,IValidatorFactory validatorFactory)
+        public ServiceContainer(IUnitOfWork uow, 
+                                IMapper mapper, 
+                                ILoggerFactory loggerFactory,
+                                IValidatorFactory validatorFactory,
+                                IConfiguration config)
         {
             serviceDictionary = new Dictionary<Type, object>();
             this.uow = uow;
             this.mapper = mapper;
             this.loggerFactory = loggerFactory;
             this.validatorFactory = validatorFactory;
+            this.config = config;
         }
 
         public string ErrorCode => ((BaseService)service).errorCode;
@@ -52,16 +59,28 @@ namespace Bulky_Core
             return (IGenericCrudBaseService<TEntity, TDTO>)service;
         }
 
-        public AccountService AccountService()
+        public UserService UserService()
         {
-            if(!serviceDictionary.TryGetValue(typeof(AccountService), out service))
+            if(!serviceDictionary.TryGetValue(typeof(UserService), out service))
             {
-                service = new AccountService(uow, loggerFactory.CreateLogger<AccountService>());
+                service = new UserService(uow, loggerFactory.CreateLogger<UserService>());
 
-                serviceDictionary.Add(typeof(AccountService), service);
+                serviceDictionary.Add(typeof(UserService), service);
             }
 
-            return (AccountService)service;
+            return (UserService)service;
+        }
+
+        public AuthService AuthService()
+        {
+            if(!serviceDictionary.TryGetValue(typeof(AuthService),out service))
+            {
+                service = new AuthService(config);
+
+                serviceDictionary.Add(typeof(AuthService), service);
+            }
+
+            return (AuthService)service;
         }
     }
 }

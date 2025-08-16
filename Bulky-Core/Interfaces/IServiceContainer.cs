@@ -16,6 +16,8 @@ namespace Bulky_Core.Interfaces
         IGenericCrudBaseService<TEntity, TDTO> GenericCrudBaseService<TEntity, TDTO>()
         where TEntity : BaseModel, new()
         where TDTO : BaseDTO, new();
-        AccountService AccountService();
+        UserService UserService();
+        AuthService AuthService();
+
     }
 }

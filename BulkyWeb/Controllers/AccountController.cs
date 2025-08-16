@@ -1,5 +1,6 @@
 ﻿using Bulky_Core.Interfaces;
 using Bulky_Core.Messages;
+using Bulky_Core.Utilities;
 using Bulky_DTO.Account;
 using BulkyWeb.Base;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +9,13 @@ namespace BulkyWeb.Controllers
 {
     public class AccountController : BaseController
     {
-        public AccountController(IServiceContainer serviceContainer): base(serviceContainer) { }
-        
+        private readonly IConfiguration config;
+
+        public AccountController(IServiceContainer serviceContainer,IConfiguration config): base(serviceContainer)
+        {
+            this.config = config;
+        }
+
 
         [HttpGet]
         public IActionResult Login()
@@ -26,7 +32,15 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserDTO input)
         {
-            return Ok();
+            var user = await serviceContainer.UserService().Register(input);
+            if (user == null)
+                return BadRequest(GeneralMessages.DefaultError());
+
+            var token = serviceContainer.AuthService().GenerateJWTToken(user);
+
+            Response.SetJwtCookie(token, Convert.ToInt32(config["Jwt:ExpireMinutes"]));
+
+            return RedirectToAction("Index","Home");
         }
     }
 }
