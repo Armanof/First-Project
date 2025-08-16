@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bulky_Core.Base;
+using Bulky_Core.Identity;
 using Bulky_Core.Interfaces;
 using Bulky_DTO.Base;
 using Bulky_Infrastructure.Interfaces;
@@ -49,6 +50,18 @@ namespace Bulky_Core
             }
 
             return (IGenericCrudBaseService<TEntity, TDTO>)service;
+        }
+
+        public AccountService AccountService()
+        {
+            if(!serviceDictionary.TryGetValue(typeof(AccountService), out service))
+            {
+                service = new AccountService(uow, loggerFactory.CreateLogger<AccountService>());
+
+                serviceDictionary.Add(typeof(AccountService), service);
+            }
+
+            return (AccountService)service;
         }
     }
 }

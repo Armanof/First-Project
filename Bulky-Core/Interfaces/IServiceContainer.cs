@@ -1,4 +1,5 @@
-﻿using Bulky_DTO.Base;
+﻿using Bulky_Core.Identity;
+using Bulky_DTO.Base;
 using Bulky_Models.Base;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,6 @@ namespace Bulky_Core.Interfaces
         IGenericCrudBaseService<TEntity, TDTO> GenericCrudBaseService<TEntity, TDTO>()
         where TEntity : BaseModel, new()
         where TDTO : BaseDTO, new();
+        AccountService AccountService();
     }
 }

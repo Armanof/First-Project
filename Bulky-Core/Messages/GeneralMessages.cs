@@ -52,6 +52,18 @@ namespace Bulky_Core.Messages
             return ("G-0010", $"فیلد {fieldName} میبایستی بین {min} و {max} باشد.");
         }
 
+        public static (string Code, string Message) MustMatch(string fieldName, string? pattern)
+        {
+            return ("G-0011", $"فیلد {fieldName} از الگو {pattern} تبعیت نمی کند");
+        }
+
+        public static (string Code, string Message) MustEqualsTo(string fieldName, string expression)
+        {
+            return ("G0012", $"فیلد {fieldName} باید با {expression} برابر باشد");
+        }
+
+        public static (string Code,string Message) PasswordIsWeak { get => ("G-0013", "رمز عبور مقاوم نیست."); }
+        public static (string Code,string Message) PhoneNumberAndEmailCantBeEmpty { get => ("G-0013", "رمز عبور مقاوم نیست."); }
         public static (string Code, string Message) Success { get => ("", "عملیات با موفقیت انجام شد"); }
     }
 }

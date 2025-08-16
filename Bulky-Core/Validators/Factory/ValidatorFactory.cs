@@ -34,7 +34,7 @@ namespace Bulky_Core.Validators.Factory
                 if (validatorType == null)
                     throw new InvalidOperationException($"No validator found for {typeof(T).Name}");
 
-                validator = (FluentValidation.IValidator<T>)Activator.CreateInstance(validatorType, uow);
+                validator = Activator.CreateInstance(validatorType, uow) as FluentValidation.IValidator<T>;
                 _cache.Add(type, validator);
             }
 
