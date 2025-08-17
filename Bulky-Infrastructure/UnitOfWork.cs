@@ -2,9 +2,13 @@
 using Bulky_Infrastructure.Interfaces;
 using Bulky_Infrastructure.Repositories;
 using Bulky_Models.Base;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +17,13 @@ namespace Bulky_Infrastructure
     public class UnitOfWork
         : IUnitOfWork
     {
-        private readonly BulkyContext context;
+        private readonly BulkyContext db;
+        private readonly IHttpContextAccessor context;
         private Dictionary<Type, object> Repositories;
 
-        public UnitOfWork(BulkyContext context)
+        public UnitOfWork(BulkyContext db,IHttpContextAccessor context)
         {
+            this.db = db;
             this.context = context;
             Repositories = new Dictionary<Type, object>();
         }
@@ -27,16 +33,40 @@ namespace Bulky_Infrastructure
             object rep;
             if (!Repositories.TryGetValue(typeof(IRepository<T>), out rep))
             {
-                rep = new Repository<T>(context);
+                rep = new Repository<T>(db);
                 Repositories.Add(typeof(IRepository<T>), rep);
             }
 
             return (IRepository<T>)rep;
         }
 
+        private void BeforeSaveChange()
+        {
+            Guid userId = Guid.Parse(context.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var remoteIpAddress = context.HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            foreach (var entry in db.ChangeTracker.Entries<BaseModel>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.InsertedUserID = userId;
+                        entry.Entity.InsertedIP = remoteIpAddress;
+                        entry.Entity.InsertedDateTime = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.UpdatedUserID = userId;
+                        entry.Entity.UpdatedIP = remoteIpAddress;
+                        entry.Entity.UpdatedDateTime = DateTime.UtcNow;
+                        break;
+                }
+            }
+        }
+
         public async Task SaveChangesAsync()
         {
-            await context.SaveChangesAsync();
+            BeforeSaveChange();
+            await db.SaveChangesAsync();
         }
     }
 }

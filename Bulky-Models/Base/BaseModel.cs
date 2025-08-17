@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Bulky_Models.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bulky_Models.Base
 {
-    public abstract class BaseModel
+    public abstract class BaseModel:ISoftDelete
     {
         public Guid Id { get; set; }
 
@@ -59,6 +60,8 @@ namespace Bulky_Models.Base
 
             builder.Property(x => x.IsDeleted)
                 .HasDefaultValueSql("0");
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
 
             ConfigureEntity(builder);
         }

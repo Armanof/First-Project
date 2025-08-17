@@ -1,5 +1,6 @@
 ﻿using Bulky_Infrastructure.Interfaces;
 using Bulky_Models.Base;
+using Bulky_Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -42,15 +43,14 @@ namespace Bulky_Infrastructure.Repositories
         {
             try
             {
-                var localEntity = dbset.Local.FirstOrDefault(x => x.Id == id);
-                if (localEntity != null)
+
+                if (typeof(T).IsAssignableFrom(typeof(ISoftDelete)))
                 {
-                    context.Entry(localEntity).State = EntityState.Deleted;
+                    await SoftDelete(id);
                 }
                 else
                 {
-                    var entity = await Find(id);
-                    dbset.Remove(entity);
+                    await HardDelete(id);
                 }
 
                 return true;
@@ -58,6 +58,37 @@ namespace Bulky_Infrastructure.Repositories
             catch (Exception ex)
             {
                 return false;
+            }
+        }
+
+        private async Task SoftDelete(Guid id)
+        {
+            var localEntity = dbset.Local.FirstOrDefault(x => x.Id == id);
+            if (localEntity != null)
+            {
+                localEntity.IsDeleted = true;
+                context.Entry(localEntity).State = EntityState.Modified;
+            }
+            else
+            {
+                var entity = await Find(id);
+                entity.IsDeleted = true;
+                dbset.Update(entity);
+            }
+        }
+
+        private async Task HardDelete(Guid id)
+        {
+            var localEntity = dbset.Local.FirstOrDefault(x => x.Id == id);
+
+            if (localEntity != null)
+            {
+                context.Entry(localEntity).State = EntityState.Deleted;
+            }
+            else
+            {
+                var entity = await Find(id);
+                dbset.Remove(entity);
             }
         }
 
@@ -98,7 +129,7 @@ namespace Bulky_Infrastructure.Repositories
                 if (include != null)
                     entities = include(entities);
 
-                if(orderBy != null)
+                if (orderBy != null)
                     entities = orderBy(entities);
 
                 if (filter != null)
@@ -129,7 +160,7 @@ namespace Bulky_Infrastructure.Repositories
                 if (include != null)
                     entities = include(entities);
 
-                if(orderBy != null)
+                if (orderBy != null)
                     entities = orderBy(entities);
 
                 if (filter != null)
@@ -168,7 +199,7 @@ namespace Bulky_Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> Any(Expression<Func<T,bool>> predicate)
+        public async Task<bool> Any(Expression<Func<T, bool>> predicate)
         {
             return await dbset.AnyAsync(predicate);
         }
