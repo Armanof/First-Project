@@ -18,6 +18,7 @@ builder.Services.AddDbContext<BulkyContext>(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices();
+builder.Services.AddHttpContextAccessor();
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
