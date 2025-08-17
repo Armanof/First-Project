@@ -12,14 +12,15 @@ namespace Bulky_Core.Utilities
     {
         public static Guid? GetUserId(this IHttpContextAccessor context)
         {
-            try
+            var userIdClaim = context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            Guid? userId = null;
+            if (Guid.TryParse(userIdClaim, out var parsedGuid))
             {
-                return Guid.Parse(context.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                userId = parsedGuid;
             }
-            catch (Exception)
-            {
-                return null;
-            }
+
+            return userId;
         }
 
         public static string? GetUserName(this IHttpContextAccessor context)

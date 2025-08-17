@@ -42,7 +42,14 @@ namespace Bulky_Infrastructure
 
         private void BeforeSaveChange()
         {
-            Guid userId = Guid.Parse(context.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdClaim = context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            Guid? userId = null;
+            if (Guid.TryParse(userIdClaim, out var parsedGuid))
+            {
+                userId = parsedGuid;
+            }
+
             var remoteIpAddress = context.HttpContext.Connection.RemoteIpAddress?.ToString();
 
             foreach (var entry in db.ChangeTracker.Entries<BaseModel>())
