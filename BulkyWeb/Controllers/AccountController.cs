@@ -34,13 +34,27 @@ namespace BulkyWeb.Controllers
         {
             var user = await serviceContainer.UserService().Register(input);
             if (user == null)
-                return BadRequest(GeneralMessages.DefaultError());
+                return BadRequest(new { serviceContainer.ErrorCode, serviceContainer.ErrorMessage });
 
             var token = serviceContainer.AuthService().GenerateJWTToken(user);
 
             Response.SetJwtCookie(token, Convert.ToInt32(config["Jwt:ExpireMinutes"]));
 
             return RedirectToAction("Index","Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginUserDTO input)
+        {
+            var user = await serviceContainer.UserService().Login(input);
+            if (user == null)
+                return BadRequest(new { serviceContainer.ErrorCode, serviceContainer.ErrorMessage });
+
+            var token = serviceContainer.AuthService().GenerateJWTToken(user);
+
+            Response.SetJwtCookie(token, Convert.ToInt32(config["Jwt:ExpireMinutes"]));
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -70,5 +70,30 @@ namespace Bulky_Core.Identity
                 return Failure(null as User, GeneralMessages.DefaultError());
             }
         }
+
+        public async Task<User?> Login(LoginUserDTO input)
+        {
+            try
+            {
+                if (input == null)
+                    return Failure(null as User, GeneralMessages.DefaultError());
+
+                var user = await uow.Repository<User>().FirstOrDefault(x => x.PhoneNumber == input.EmailOrPhone || x.Email == input.EmailOrPhone);
+                if (user == null)
+                    return Failure(null as User, GeneralMessages.UserNotFound);
+
+                var hashResult = HashTools.GetHashRfc2898(input.Password, user.SaltPassword);
+
+                if (user.Password != hashResult.hash)
+                    return Failure(null as User, GeneralMessages.PasswordIsNotCorrect);
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"exception Accured in SignIn user with error {ex.Message}");
+                return Failure(null as User, GeneralMessages.DefaultError());
+            }
+        }
     }
 }

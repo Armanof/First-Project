@@ -12,11 +12,17 @@ namespace Bulky_Core.Utilities
 {
     public static class HashTools
     {
-        public static (string hash,string salt) GetHashRfc2898(string password)
+        public static (string hash, string salt) GetHashRfc2898(string password, string? salt = null)
         {
             byte[] saltBytes = RandomNumberGenerator.GetBytes(16);
-            string salt = Convert.ToBase64String(saltBytes);
-
+            if (salt == null)
+            {
+                salt = Convert.ToBase64String(saltBytes);
+            }
+            else
+            {
+                saltBytes = Convert.FromBase64String(salt);
+            }
 
             var pbkdf2 = new Rfc2898DeriveBytes(password, saltBytes, 100000, HashAlgorithmName.SHA256);
             byte[] hashBytes = pbkdf2.GetBytes(32);
