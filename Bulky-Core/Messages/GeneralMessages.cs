@@ -63,7 +63,7 @@ namespace Bulky_Core.Messages
         }
 
         public static (string Code,string Message) PasswordIsWeak { get => ("G-0013", "رمز عبور مقاوم نیست."); }
-        public static (string Code,string Message) PhoneNumberAndEmailCantBeEmpty { get => ("G-0014", "رمز عبور مقاوم نیست."); }
+        public static (string Code,string Message) PhoneNumberAndEmailCantBeEmpty { get => ("G-0014", "ایمیل یا شماره تلفن میبایستی خالی نباشد"); }
         public static (string Code, string Message) Success { get => ("G-0015", "عملیات با موفقیت انجام شد"); }
         public static (string Code, string Message) UserNotFound { get => ("G-0016", "کاربر یافت نشد"); }
         public static (string Code, string Message) PasswordIsNotCorrect { get => ("G-0017", "رمز عبور اشتباه میباشد"); }

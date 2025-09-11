@@ -28,23 +28,7 @@
     <!-- Sidebar -->
     <div class="flex">
         <aside class="w-64 bg-white shadow-lg h-screen sticky top-0 z-50">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold text-blue-600 mb-4">📚 Bulky Book</h1>
-                <nav class="space-y-2">
-                    <a asp-controller="Home" asp-action="Index" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
-                        <i class="w-5 h-5 mr-2 text-blue-500">🏠</i> Home
-                    </a>
-                    <a asp-controller="Product" asp-action="Index" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
-                        <i class="w-5 h-5 mr-2 text-blue-500">📖</i> Books
-                    </a>
-                    <a asp-controller="Category" asp-action="Index" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
-                        <i class="w-5 h-5 mr-2 text-blue-500">🗂️</i> Categories
-                    </a>
-                    <a asp-controller="Account" asp-action="Login" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition">
-                        <i class="w-5 h-5 mr-2 text-blue-500">🔐</i> Login
-                    </a>
-                </nav>
-            </div>
+            @await Html.PartialAsync("~/Views/Shared/_Sidebar.cshtml")
         </aside>
 
         <!-- Main Content -->

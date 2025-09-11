@@ -32,17 +32,39 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options => new TokenValidationParameters
+.AddJwtBearer(options =>
 {
-    ValidateIssuer = true,
-    ValidateAudience = true,
-    ValidateLifetime = true,
-    ValidateIssuerSigningKey = true,
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+        ),
+        ClockSkew = TimeSpan.Zero
+    };
 
-    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-    ValidAudience = builder.Configuration["Jwt:Audience"],
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+             var token = context.Request.Cookies["Token"];
+            if (!string.IsNullOrEmpty(token))
+                context.Request.Headers.Authorization = "Bearer " + token;
+            return Task.CompletedTask;
+        },
+        OnAuthenticationFailed = context =>
+        {
+            return Task.CompletedTask;
+        }
+    };
 });
+
+
 
 var app = builder.Build();
 

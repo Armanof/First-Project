@@ -56,5 +56,28 @@ namespace BulkyWeb.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            if (Request.Cookies.ContainsKey("Token"))
+            {
+                var cookieOptions = new CookieOptions()
+                {
+                    HttpOnly = true,
+                    Secure = false,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(-1),
+                    Path = "/"
+                };
+
+                Response.Cookies.Append("Token", "", cookieOptions);
+                Response.Cookies.Delete("Token", new CookieOptions { Path = "/", HttpOnly = true, SameSite = SameSiteMode.Strict });
+            }
+
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

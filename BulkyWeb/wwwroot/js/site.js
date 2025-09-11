@@ -137,10 +137,8 @@ async function callApi(url, method = 'GET', data = null, headers = {}) {
     });
 
     if (result.isConfirmed) {
-        // User confirmed, call the API
         return await callApi(url, method, data, headers);
     } else {
-        // User cancelled the action
         Swal.fire({
             icon: 'info',
             title: 'Cancelled',

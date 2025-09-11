@@ -20,25 +20,25 @@ namespace Bulky_Core.Validators.Identity
             RuleFor(x => new { x.Email, x.PhoneNumber })
                 .Must(x =>
                 {
-                    if (string.IsNullOrEmpty(x.Email) && !string.IsNullOrEmpty(x.PhoneNumber))
+                    if (!string.IsNullOrEmpty(x.PhoneNumber))
                     {
-                        return Regex.IsMatch(x.PhoneNumber, "^(0|0098|\\+98)?9(0[1-5]|[1 3]\\d|2[0-3]|9[0-9]|41)\\d{7}$\r\n");
+                        return Regex.IsMatch(x.PhoneNumber, @"^(0|0098|\+98)?9(0[1-5]|[13]\d|2[0-3]|9[0-9]|41)\d{7}$");
                     }
 
                     return true;
-                }).WithErrorCodeAndMessage(GeneralMessages.MustMatch("شماره همراه", "^(0|0098|\\+98)?9(0[1-5]|[1 3]\\d|2[0-3]|9[0-9]|41)\\d{7}$\r\n"))
+                }).WithErrorCodeAndMessage(GeneralMessages.MustMatch("شماره همراه", "^(0|0098|\\+98)?9(0[1-5]|[1 3]\\d|2[0-3]|9[0-9]|41)\\d{7}$"))
                 .Must(x =>
                 {
-                    if (!string.IsNullOrEmpty(x.Email) && string.IsNullOrEmpty(x.PhoneNumber))
+                    if (!string.IsNullOrEmpty(x.Email))
                     {
-                        return Regex.IsMatch(x.Email, "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$\r\n");
+                        return Regex.IsMatch(x.Email, "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$");
                     }
 
                     return true;
-                }).WithErrorCodeAndMessage(GeneralMessages.MustMatch("ایمیل", "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$\r\n"))
+                }).WithErrorCodeAndMessage(GeneralMessages.MustMatch("ایمیل", "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$"))
                 .Must(x =>
                 {
-                    if (!string.IsNullOrEmpty(x.Email) && !string.IsNullOrEmpty(x.PhoneNumber))
+                    if (string.IsNullOrEmpty(x.Email) && string.IsNullOrEmpty(x.PhoneNumber))
                     {
                         return false;
                     }

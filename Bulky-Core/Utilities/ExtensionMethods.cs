@@ -15,15 +15,17 @@ namespace Bulky_Core.Utilities
             return options.WithErrorCode(error.errorCode).WithMessage(error.errorMessage);
         }
 
-        public static void SetJwtCookie(this HttpResponse response, string token,int expiresMinute = 60)
+        public static void SetJwtCookie(this HttpResponse response, string token, int expireMinutes)
         {
-            response.Cookies.Append("jwt", token, new CookieOptions()
+            var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
+                Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(expiresMinute)
-            });
+                Secure = false 
+            };
+
+            response.Cookies.Append("Token", token, cookieOptions);
         }
     }
 }
