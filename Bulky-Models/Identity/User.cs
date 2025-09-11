@@ -1,6 +1,7 @@
 ﻿using Bulky_Models.Base;
 using Bulky_Models.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Bulky_Models.Identity
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string SentCode { get; set; }
+        public bool IsDeveloper { get; set; }
 
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
@@ -68,6 +70,9 @@ namespace Bulky_Models.Identity
                 .HasMaxLength(6)
                 .IsUnicode(false)
                 .IsRequired(false);
+
+            builder.Property(x => x.IsDeveloper)
+                .HasDefaultValueSql("0");
         }
     }
 }
