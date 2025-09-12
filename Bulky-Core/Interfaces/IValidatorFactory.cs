@@ -10,6 +10,6 @@ namespace Bulky_Core.Interfaces
 {
     public interface IValidatorFactory
     {
-        IValidator<T> GetValidator<T>() where T : BaseDTO, new();
+        IValidator<T>? GetValidator<T>() where T : BaseDTO, new();
     }
 }

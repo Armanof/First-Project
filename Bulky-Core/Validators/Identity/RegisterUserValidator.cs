@@ -1,6 +1,6 @@
 ﻿using Bulky_Core.Messages;
 using Bulky_Core.Utilities;
-using Bulky_DTO.Account;
+using Bulky_DTO.Identity;
 using Bulky_Infrastructure.Interfaces;
 using FluentValidation;
 using System;

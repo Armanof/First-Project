@@ -1,7 +1,7 @@
 ﻿using Bulky_Core.Interfaces;
 using Bulky_Core.Messages;
 using Bulky_Core.Utilities;
-using Bulky_DTO.Account;
+using Bulky_DTO.Identity;
 using BulkyWeb.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,7 +75,6 @@ namespace BulkyWeb.Controllers
                 Response.Cookies.Append("Token", "", cookieOptions);
                 Response.Cookies.Delete("Token", new CookieOptions { Path = "/", HttpOnly = true, SameSite = SameSiteMode.Strict });
             }
-
 
             return RedirectToAction("Index", "Home");
         }

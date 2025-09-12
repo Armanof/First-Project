@@ -177,6 +177,9 @@ namespace Bulky_Core
 
         private async Task<bool> Validation(TDTO input)
         {
+            if(validator is null)
+                return true;
+
             var result = await validator.ValidateAsync(input);
             if (!result.IsValid)
             {

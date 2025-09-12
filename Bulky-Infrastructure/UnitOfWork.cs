@@ -60,11 +60,17 @@ namespace Bulky_Infrastructure
                         entry.Entity.InsertedUserID = userId;
                         entry.Entity.InsertedIP = remoteIpAddress;
                         entry.Entity.InsertedDateTime = DateTime.UtcNow;
+                        db.Entry(entry.Entity).Property(x => x.UpdatedDateTime).IsModified = false;
+                        db.Entry(entry.Entity).Property(x => x.UpdatedIP).IsModified = false;
+                        db.Entry(entry.Entity).Property(x => x.UpdatedUserID).IsModified = false;
                         break;
                     case EntityState.Modified:
                         entry.Entity.UpdatedUserID = userId;
                         entry.Entity.UpdatedIP = remoteIpAddress;
                         entry.Entity.UpdatedDateTime = DateTime.UtcNow;
+                        db.Entry(entry.Entity).Property(x => x.InsertedDateTime).IsModified = false;
+                        db.Entry(entry.Entity).Property(x => x.InsertedIP).IsModified = false;
+                        db.Entry(entry.Entity).Property(x => x.InsertedUserID).IsModified = false;
                         break;
                 }
             }

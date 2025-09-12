@@ -44,7 +44,7 @@ namespace Bulky_Infrastructure.Repositories
             try
             {
 
-                if (typeof(T).IsAssignableFrom(typeof(ISoftDelete)))
+                if (typeof(ISoftDelete).IsAssignableFrom(typeof(T)))
                 {
                     await SoftDelete(id);
                 }
@@ -186,7 +186,7 @@ namespace Bulky_Infrastructure.Repositories
                 }
                 else
                 {
-                    var entityInDb = dbset.AsNoTracking().First(x => x.Id == entity.Id);
+                    var entityInDb = await dbset.AsNoTracking().FirstAsync(x => x.Id == entity.Id);
                     entityInDb = entity;
                     dbset.Update(entityInDb);
                 }

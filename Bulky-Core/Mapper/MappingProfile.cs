@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Bulky_DTO;
+using Bulky_DTO.Identity;
 using Bulky_Models;
+using Bulky_Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace Bulky_Core.Mapper
                 .ForMember(x => x.Value, it => it.MapFrom(t => t.Id))
                 .ForMember(x => x.Text, it => it.MapFrom(t => t.Name))
                 .ReverseMap();
+            CreateMap<Role, RoleDTO>().ReverseMap();
         }
     }
 }

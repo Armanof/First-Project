@@ -4,7 +4,7 @@ using Bulky_Core.Messages;
 using Bulky_Core.Utilities;
 using Bulky_Core.Utilities.Enums;
 using Bulky_Core.Validators.Identity;
-using Bulky_DTO.Account;
+using Bulky_DTO.Identity;
 using Bulky_Infrastructure.Interfaces;
 using Bulky_Models.Identity;
 using FluentValidation;

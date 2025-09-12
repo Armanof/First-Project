@@ -136,15 +136,44 @@ async function callApi(url, method = 'GET', data = null, headers = {}) {
         }
     });
 
-    if (result.isConfirmed) {
-        return await callApi(url, method, data, headers);
-    } else {
-        Swal.fire({
+    if (!result.isConfirmed) {
+        await Swal.fire({
             icon: 'info',
             title: 'Cancelled',
             text: 'Action was cancelled by the user.',
             timer: 1500,
             showConfirmButton: false
+        });
+        return null;
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: data ? JSON.stringify(data) : null
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        setTimeout(() => {
+            location.reload();
+        }, 1600);
+
+        const resultData = await response.json();
+        return resultData;
+
+    } catch (error) {
+        console.error('API call failed:', error);
+        await Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong while processing your request.'
         });
         return null;
     }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bulky_DTO.Account
+namespace Bulky_DTO.Identity
 {
     public class LoginUserDTO
         : BaseDTO
