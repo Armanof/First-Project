@@ -22,7 +22,11 @@ namespace Bulky_Core.Mapper
                 .ForMember(x => x.Value, it => it.MapFrom(t => t.Id))
                 .ForMember(x => x.Text, it => it.MapFrom(t => t.Name))
                 .ReverseMap();
+
+
             CreateMap<Role, RoleDTO>().ReverseMap();
+            CreateMap<Permission, PermissionDTO>().ReverseMap();
+            CreateMap<PermissionEndPoint, PermissionEndPointDTO>().ReverseMap();
         }
     }
 }

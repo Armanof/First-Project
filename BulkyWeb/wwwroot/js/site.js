@@ -1,4 +1,4 @@
-﻿async function openEntityModal(controller, action, id = null) {
+﻿async function openEntityModal(controller, action, id = null, modalSize = 'max-w-lg') {
     const modalId = `modal-${controller.toLowerCase()}`;
     const url = `/${controller}/${action}${id ? `?id=${id}` : ''}`;
 
@@ -8,11 +8,13 @@
 
         const modal = document.createElement('div');
         modal.id = modalId;
+
+        // modalSize is applied here, e.g., 'max-w-lg', 'max-w-2xl'
         modal.innerHTML = `
             <div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white p-6 rounded shadow-lg max-w-lg w-full relative overflow-y-auto max-h-[90vh]">
+                <div class="bg-white p-6 rounded shadow-lg w-full relative overflow-y-auto max-h-[90vh] ${modalSize}">
                     <button id="modalCloseBtn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold" aria-label="Close modal">&times;</button>
-                    <form id="entityForm" method="post" enctype="multipart/form-data" action="/${controller}/${action}" >
+                    <form id="entityForm" method="post" enctype="multipart/form-data" action="/${controller}/${action}">
                         <div id="modalFormBody">${html}</div>
                         <div class="mt-4 text-right">
                             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
@@ -26,6 +28,7 @@
 
         document.body.appendChild(modal);
 
+        // Image browse handlers
         document.addEventListener('click', function (e) {
             if (e.target && e.target.id === 'browseImageBtn') {
                 document.getElementById('imageFileInput').click();
@@ -36,16 +39,13 @@
             if (e.target && e.target.id === 'imageFileInput') {
                 const fileInput = e.target;
                 const displayInput = document.getElementById('imageUrlDisplay');
-
                 if (fileInput.files.length > 0) {
-                    const fileName = fileInput.files[0].name;
-                    displayInput.value = fileName;
+                    displayInput.value = fileInput.files[0].name;
                 }
             }
         });
 
         modal.querySelector('#modalCloseBtn').addEventListener('click', () => modal.remove());
-
         modal.querySelector('#modalBackdrop').addEventListener('click', (e) => {
             if (e.target.id === 'modalBackdrop') modal.remove();
         });
@@ -115,7 +115,6 @@
         });
     }
 }
-
 
 
 function closeEntityModal(modalId) {

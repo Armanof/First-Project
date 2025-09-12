@@ -67,5 +67,6 @@ namespace Bulky_Core.Messages
         public static (string Code, string Message) Success { get => ("G-0015", "عملیات با موفقیت انجام شد"); }
         public static (string Code, string Message) UserNotFound { get => ("G-0016", "کاربر یافت نشد"); }
         public static (string Code, string Message) PasswordIsNotCorrect { get => ("G-0017", "رمز عبور اشتباه میباشد"); }
+        public static (string Code, string Message) UnAuthorized { get => ("G-0018", "عملیات انتخاب شده قابل دسترسی نمیباشد"); }
     }
 }

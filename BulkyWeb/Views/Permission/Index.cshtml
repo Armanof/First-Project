@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Bulky_DTO.Identity.PermissionDTO>
+@{
+    ViewData["Title"] = "Manage Permissions";
+}
+
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+    <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+        📂 Permission Management
+    </h2>
+
+    <div class="flex flex-wrap gap-2">
+        <button onclick="openEntityModal('Permission','Upsert', null, 'max-w-4xl')"
+                class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition flex items-center gap-1">
+            ➕ Add Permission
+        </button>
+        <button onclick="openEntityModal('PermissionEndPoint','Upsert')"
+                class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition flex items-center gap-1">
+            ➕ Add EndPoints
+        </button>
+    </div>
+</div>
+
+<div class="overflow-x-auto rounded shadow bg-white">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-blue-50 text-gray-700">
+            <tr>
+                <th class="text-left px-6 py-3 uppercase tracking-wider text-sm font-medium">Name</th>
+                <th class="text-left px-6 py-3 uppercase tracking-wider text-sm font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+            @foreach (var permission in Model)
+            {
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-4 text-gray-800 font-medium">@permission.Name</td>
+                    <td class="px-6 py-4 flex gap-3">
+                        <button onclick="openEntityModal('Permission','Upsert','@permission.Id')"
+                                class="text-blue-600 hover:text-blue-800 font-medium transition flex items-center gap-1"
+                                title="Edit Permission">
+                            ✏️ Edit
+                        </button>
+
+                        <button onclick="callApi('/Permission/Delete/@permission.Id','PUT')"
+                                class="text-red-600 hover:text-red-800 font-medium transition flex items-center gap-1"
+                                title="Delete Permission">
+                            🗑️ Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+
+        document.getElementById('selectAllEndpoints')?.addEventListener('change', function (e) {
+            const checkboxes = document.querySelectorAll('.endpoint-checkbox');
+            checkboxes.forEach(cb => cb.checked = e.target.checked);
+        });
+    </script>
+}

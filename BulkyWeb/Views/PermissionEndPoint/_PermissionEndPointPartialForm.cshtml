@@ -1,0 +1,48 @@
+﻿@model Bulky_DTO.Identity.PermissionEndPointDTO
+
+<div class="space-y-4">
+    <div>
+        <label asp-for="EndPointName" class="block text-sm font-medium text-gray-700"></label>
+        <input asp-for="EndPointName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+        <span asp-validation-for="EndPointName" class="text-red-500 text-sm"></span>
+    </div>
+
+    <div>
+        <label asp-for="ControllerName" class="block text-sm font-medium text-gray-700"></label>
+        <input asp-for="ControllerName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+        <span asp-validation-for="ControllerName" class="text-red-500 text-sm"></span>
+    </div>
+
+    <div>
+        <label asp-for="ActionName" class="block text-sm font-medium text-gray-700"></label>
+        <input asp-for="ActionName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+        <span asp-validation-for="ActionName" class="text-red-500 text-sm"></span>
+    </div>
+
+    <div>
+        <label asp-for="HttpMethod" class="block text-sm font-medium text-gray-700"></label>
+        <select asp-for="HttpMethod" class="w-full border rounded px-3 py-2">
+            <option value="">-- Select Method --</option>
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+        </select>
+        <span asp-validation-for="HttpMethod" class="text-red-500 text-sm"></span>
+    </div>
+
+    <div>
+        <label asp-for="F_PermissionId" class="block text-sm font-medium text-gray-700">Parent Permission</label>
+        <select asp-for="F_PermissionId" class="w-full border rounded px-3 py-2">
+            <option value="">-- Select Permission --</option>
+            @if (ViewBag.PermissionList != null)
+            {
+                foreach (var permission in ViewBag.PermissionList)
+                {
+                    <option value="@permission.Id" selected="@(Model != null && Model.F_PermissionId == permission.Id)">@permission.Name</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="F_PermissionId" class="text-red-500 text-sm"></span>
+    </div>
+</div>
