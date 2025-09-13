@@ -178,26 +178,28 @@ namespace Bulky_Infrastructure.Repositories
         {
             try
             {
-                var localEntity = dbset.Local.FirstOrDefault(x => x.Id == entity.Id);
-                if (localEntity != null)
+                var trackedEntity = dbset.Local.FirstOrDefault(x => x.Id == entity.Id);
+
+                if (trackedEntity != null)
                 {
-                    localEntity = entity;
-                    context.Entry(localEntity).State = EntityState.Modified;
+                    context.Entry(trackedEntity).CurrentValues.SetValues(entity);
                 }
                 else
                 {
-                    var entityInDb = await dbset.AsNoTracking().FirstAsync(x => x.Id == entity.Id);
-                    entityInDb = entity;
-                    dbset.Update(entityInDb);
+                    dbset.Attach(entity);
+                    context.Entry(entity).State = EntityState.Modified;
                 }
 
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
+                // optionally log ex
                 return false;
             }
         }
+
 
         public async Task<bool> Any(Expression<Func<T, bool>> predicate)
         {

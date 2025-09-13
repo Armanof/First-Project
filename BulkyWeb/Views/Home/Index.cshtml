@@ -8,16 +8,22 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 bg-gray-50 min-h-screen">
     @foreach (var item in Model)
     {
-        <div class="flex flex-col bg-gray-100 border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition duration-300 p-4">
-            <img src="/@item.ImageUrl"
-                 alt="@item.Title"
-                 class="w-full max-h-48 object-contain rounded-xl bg-white p-2 mb-4 mx-auto" />
+        <div class="flex flex-col h-full bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition duration-300 p-4">
 
+            
+            <div class="flex justify-center items-center mb-4">
+                <img src="/@item.ImageUrl"
+                     alt="@item.Title"
+                     class="w-full max-h-48 object-contain rounded-xl bg-gray-50 p-2" />
+            </div>
+
+            
             <h2 class="text-lg font-semibold text-gray-800 mb-1">@item.Title</h2>
             <p class="text-sm text-gray-600 mb-1">@item.Author</p>
             <p class="text-sm text-gray-500 mb-2 line-clamp-3">@item.Description</p>
 
-            <div class="mt-auto flex justify-between items-center pt-2">
+            
+            <div class="mt-auto flex justify-between items-center pt-3 border-t border-gray-200">
                 <span class="text-lg font-bold text-blue-600">$@item.Price</span>
                 <a href="/Product/Details/@item.Id"
                    class="bg-blue-600 text-white px-4 py-1 rounded-md hover:bg-blue-700 text-sm transition">
@@ -27,4 +33,3 @@
         </div>
     }
 </div>
-

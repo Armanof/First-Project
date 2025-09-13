@@ -15,24 +15,37 @@
     <thead class="bg-blue-50 text-gray-700">
         <tr>
             <th class="text-left px-6 py-3">Name</th>
+            <th class="text-left px-6 py-3">Is Default</th>
             <th class="text-left px-6 py-3">Actions</th>
         </tr>
     </thead>
     <tbody class="divide-y text-gray-700">
         @foreach (var role in Model)
         {
-            <tr class="hover:bg-gray-50 transition">
+            var rowClass = role.IsDefault ? "bg-green-100 font-semibold" : "";
+
+            <tr class="hover:bg-gray-50 transition @rowClass">
                 <td class="px-6 py-4">@role.Name</td>
+                <td class="px-6 py-4">@(role.IsDefault? "Yes":"No")</td>
                 <td class="px-6 py-4 space-x-3">
+
                     <a href="#" onclick="openEntityModal('Role','Upsert','@role.Id')"
                        class="text-blue-600 hover:underline" title="Edit Role">
                         ✏️ Edit
                     </a>
 
+
                     <a href="#" onclick="openEntityModal('Role','AssignPermissionsToRole','@role.Id')"
                        class="text-yellow-600 hover:underline" title="Manage Permissions">
                         🔒 Permissions
                     </a>
+
+
+                    <a href="#" onclick="callApi('/Role/SetDefault/@role.Id','PUT')"
+                       class="text-green-600 hover:underline" title="Set as Default Role">
+                        ⭐ Default
+                    </a>
+
 
                     <a href="#" onclick="callApi('/Role/Delete/@role.Id','PUT')"
                        class="text-red-600 hover:underline" title="Delete Role">

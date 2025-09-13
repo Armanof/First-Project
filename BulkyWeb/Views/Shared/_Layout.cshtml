@@ -20,26 +20,30 @@
     <!-- Heroicons -->
     <link href="https://unpkg.com/heroicons@2.0.16/24/solid.css" rel="stylesheet" />
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body class="bg-gray-100 min-h-screen font-sans">
 
-    <!-- Sidebar -->
-    <div class="flex">
-        <aside class="w-64 bg-white shadow-lg h-screen sticky top-0 z-50">
+    <!-- Site JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans">
+
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg sticky top-0 z-50 h-screen">
             @await Html.PartialAsync("~/Views/Shared/_Sidebar.cshtml")
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <div class="bg-white shadow-md rounded-lg p-6">
+        <div class="flex-1 flex flex-col p-6">
+            <!-- Page Header + Body -->
+            <div class="bg-white shadow-md rounded-lg p-6 flex-1">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-700">@title</h2>
                 @RenderBody()
             </div>
 
             <!-- Footer -->
-            <footer class="text-center text-gray-500 text-sm mt-10">
+            <footer class="text-center text-gray-500 text-sm mt-6 border-t border-gray-200 pt-4">
                 <p>&copy; @DateTime.Now.Year - Bulky Book. All rights reserved.</p>
             </footer>
         </div>

@@ -10,5 +10,6 @@ namespace Bulky_DTO.Identity
     public class RoleDTO : BaseDTO
     {
         public string Name { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

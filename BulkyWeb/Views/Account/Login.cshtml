@@ -89,13 +89,8 @@
                 return;
             }
 
-            
-            const result = await response.json();
-            if (result.redirectUrl) {
-                window.location.href = result.redirectUrl;
-            } else {
-                location.reload();
-            }
+            form.submit();
+
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -109,3 +104,5 @@
         }
     });
 </script>
+
+

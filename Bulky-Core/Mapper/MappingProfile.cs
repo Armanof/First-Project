@@ -27,6 +27,7 @@ namespace Bulky_Core.Mapper
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<Permission, PermissionDTO>().ReverseMap();
             CreateMap<PermissionEndPoint, PermissionEndPointDTO>().ReverseMap();
+            CreateMap<User, UserDTO>().ReverseMap();
         }
     }
 }

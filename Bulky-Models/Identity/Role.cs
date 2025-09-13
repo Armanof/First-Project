@@ -1,6 +1,7 @@
 ﻿using Bulky_Models.Base;
 using Bulky_Models.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Bulky_Models.Identity
         : BaseModel
     {
         public string Name { get; set; }
+        public bool IsDefault { get; set; }
 
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
@@ -35,6 +37,9 @@ namespace Bulky_Models.Identity
         {
             builder.Property(x => x.Name)
                 .HasMaxLength(300);
+
+            builder.Property(x => x.IsDefault)
+                .HasDefaultValueSql("0");
         }
     }
 }

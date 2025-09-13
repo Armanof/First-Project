@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Bulky_DTO.Identity.UserDTO>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">👥 User Management</h2>
+</div>
+
+<table class="min-w-full bg-white rounded shadow overflow-hidden">
+    <thead class="bg-blue-50 text-gray-700">
+        <tr>
+            <th class="text-left px-6 py-3">Name</th>
+            <th class="text-left px-6 py-3">Phone Number</th>
+            <th class="text-left px-6 py-3">Email</th>
+            <th class="text-left px-6 py-3">Actions</th>
+        </tr>
+    </thead>
+    <tbody class="divide-y text-gray-700">
+        @foreach (var user in Model)
+        {
+            <tr class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4">@user.Name</td>
+                <td class="px-6 py-4">@user.PhoneNumber</td>
+                <td class="px-6 py-4">@user.Email</td>
+                <td class="px-6 py-4 space-x-2">
+                    <a href="#" onclick="openEntityModal('User','ManageRoles','@user.Id','max-w-2xl')"
+                       class="text-purple-600 hover:underline" title="Manage Roles">
+                        🛡️ Roles
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

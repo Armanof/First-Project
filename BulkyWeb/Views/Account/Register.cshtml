@@ -82,10 +82,12 @@
         try {
             const response = await fetch(form.action, {
                 method: form.method,
-                body: formData
+                body: formData,
+                redirect: "follow" 
             });
 
             if (!response.ok) {
+                
                 let errorText = await response.text();
                 try {
                     const obj = JSON.parse(errorText);
@@ -94,8 +96,8 @@
 
                 Swal.fire({
                     icon: 'error',
-                    title: 'Login Failed',
-                    text: errorText || 'Invalid credentials or bad request.',
+                    title: 'Registration Failed',
+                    text: errorText || 'Invalid data or bad request.',
                     confirmButtonText: 'OK',
                     customClass: {
                         confirmButton: 'swal2-confirm bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700'
@@ -104,13 +106,9 @@
                 return;
             }
 
+            
+            form.submit();
 
-            const result = await response.json();
-            if (result.redirectUrl) {
-                window.location.href = result.redirectUrl;
-            } else {
-                location.reload();
-            }
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -124,3 +122,4 @@
         }
     });
 </script>
+
