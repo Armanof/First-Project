@@ -14,6 +14,17 @@ namespace BulkyWeb.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var result = await serviceContainer.GenericCrudBaseService<PermissionEndPoint, PermissionEndPointDTO>().GetAll();
+            if (result != null)
+                return PartialView(result);
+
+            return BadRequest(new { serviceContainer.ErrorCode, serviceContainer.ErrorMessage });
+        }
+
+
+        [HttpGet]
         public async Task<IActionResult> Upsert(Guid? id)
         {
             if (id != null)

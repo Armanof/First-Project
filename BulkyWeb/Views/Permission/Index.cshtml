@@ -13,10 +13,6 @@
                 class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition flex items-center gap-1">
             ➕ Add Permission
         </button>
-        <button onclick="openEntityModal('PermissionEndPoint','Upsert')"
-                class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition flex items-center gap-1">
-            ➕ Add EndPoints
-        </button>
     </div>
 </div>
 
@@ -50,6 +46,11 @@
             }
         </tbody>
     </table>
+</div>
+<div class="mt-8">
+
+    @await Html.PartialAsync("~/Views/PermissionEndPoint/Index.cshtml", (ViewBag.PermissionEndPoint as IEnumerable<Bulky_DTO.Identity.PermissionEndPointDTO>) ?? new List<Bulky_DTO.Identity.PermissionEndPointDTO>())
+
 </div>
 @section Scripts {
     <script>
