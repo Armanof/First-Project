@@ -26,6 +26,7 @@ namespace Bulky_Infrastructure.Contexts
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<PermissionEndPoint> PermissionEndPoints { get; set; }
+        public DbSet<EndPoint> EndPoints { get; set; }
 
 
 
@@ -44,6 +45,7 @@ namespace Bulky_Infrastructure.Contexts
             modelBuilder.ApplyConfiguration(new UserRoleEntityTypeConfiguration(accessor));
             modelBuilder.ApplyConfiguration(new RolePermissionEntityTypeConfiiguration(accessor));
             modelBuilder.ApplyConfiguration(new PermissionEndPointsEntityTypeConfiguration(accessor));
+            modelBuilder.ApplyConfiguration(new EndPointEntityTypeConfiguration(accessor));
 
             #endregion
 

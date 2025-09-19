@@ -30,6 +30,8 @@ namespace BulkyWeb.Controllers
             if (id != null)
                 return BadRequest(GeneralMessages.UnAuthorized);
 
+
+            await CreateViewLists();
             return PartialView("_PermissionEndPointPartialForm");
         }
 
